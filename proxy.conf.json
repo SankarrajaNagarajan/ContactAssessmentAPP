@@ -1,0 +1,18 @@
+{
+  "/api/Auth": {
+    "target": "http://localhost:5270",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/Auth": "/api/Auth"
+    }
+  },
+  "/api/contacts": {
+    "target": "http://localhost:5270",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/contacts": "/api/contacts"
+    }
+  }
+}

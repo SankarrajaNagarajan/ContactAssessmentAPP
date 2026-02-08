@@ -1,0 +1,56 @@
+<div class="login-container">
+  <div class="login-left">
+    <div class="greeting-box">
+      <p class="greeting-text">Hello!</p>
+      <h1 class="greeting-title">Have a<br />GOOD DAY</h1>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-box">
+      <h2 class="login-heading">Login</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            formControlName="username"
+            [class.is-invalid]="submitted && f['username'].errors"
+            placeholder="Enter username"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['username'].errors">
+            Username is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            formControlName="password"
+            [class.is-invalid]="submitted && f['password'].errors"
+            placeholder="Enter password"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['password'].errors">
+            Password is required
+          </div>
+          
+        </div>
+
+        <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+        <button type="submit" class="btn btn-login w-100">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? 'Logging in...' : 'Login' }}
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+

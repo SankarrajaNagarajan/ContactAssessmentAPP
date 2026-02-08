@@ -1,0 +1,104 @@
+/* Ensure body allows modal to be visible */
+body {
+  overflow: visible !important;
+}
+
+/* Prevent any parent container from hiding modal */
+.gmail-contact-wrapper,
+.table-container {
+  position: relative;
+  z-index: 1;
+  overflow: visible !important;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  z-index: 10000 !important;
+  position: absolute !important;
+}
+
+.btn-group,
+.dropdown {
+  z-index: 10000 !important;
+}
+
+/* Ensure navbar is above content */
+nav,
+.navbar {
+  z-index: 100 !important;
+  position: relative;
+}
+
+.modal-custom-size {
+  /* Fixed 500px desktop dialog */
+  .modal-dialog {
+    max-width: 500px !important;
+    width: 500px !important;
+    height: 650px !important;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    z-index: 99999 !important;
+  }
+
+  /* SOLID WHITE BACKGROUND */
+  .modal-content {
+    height: 100% !important;
+    border-radius: 16px !important;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25) !important;
+    background-color: #ffffff !important;
+    backdrop-filter: none !important;
+    z-index: 99999 !important;
+  }
+
+  .modal-body {
+    max-height: 450px;
+    overflow-y: auto;
+    padding: 1.5rem !important;
+    background-color: #ffffff !important;
+  }
+}
+
+/* Global Modal Backdrop - MUST be highest priority */
+:global(.modal-backdrop) {
+  z-index: 99998 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+:global(.modal.show) {
+  z-index: 99999 !important;
+  position: fixed !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+:global(.modal) {
+  z-index: 99999 !important;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .modal-custom-size .modal-dialog {
+    width: 95vw !important;
+    height: 90vh !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-custom-size .modal-dialog {
+    width: 98vw !important;
+    height: 92vh !important;
+  }
+}
+

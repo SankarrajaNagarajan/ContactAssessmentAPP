@@ -1,0 +1,157 @@
+<div class="gmail-contact-wrapper">
+  <!-- Header -->
+  <!-- <div class="contact-header">
+    <h1 class="contact-title">Contacts</h1>
+  </div> -->
+
+  <!-- Search and Action Bar -->
+  <div class="search-action-bar">
+    <div class="search-wrapper">
+      <!-- <input
+        type="text"
+        placeholder="Search contacts..."
+        [(ngModel)]="searchFilters.name"
+        (input)="onSearchInput()"
+        class="search-input"
+      /> -->
+    </div>
+    <button mat-raised-button color="Basic" (click)="openAddModal()" style="background:#ffffff;color:#1f2937;border:1px solid rgba(0,0,0,0.08);">
+      <!-- <mat-icon>add</mat-icon> -->
+      Add Contact
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="mt-3">Loading contacts...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && dataSource.data.length === 0" class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h3>No contacts found</h3>
+    <p>Start by adding your first contact</p>
+  </div>
+
+  <!-- Contacts Table -->
+  <div *ngIf="!loading && dataSource.data.length > 0" class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-table-wrapper">
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            [checked]="isAllSelected()"
+            [indeterminate]="selectedContacts.size > 0 && !isAllSelected()"
+            (change)="toggleSelectAll($event)"
+          ></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          <mat-checkbox
+            [checked]="isContactSelected(contact.id)"
+            (change)="toggleSelectContact(contact.id)"
+          ></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- First Name Column -->
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by first name">
+          Name
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          <div class="contact-name">
+            <div class="avatar-small">{{ getInitials(contact.firstName, contact.lastName) }}</div>
+            <div class="name-text">
+              <strong>{{ contact.firstName }} {{ contact.lastName }}</strong>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Last Name Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last name">
+          Last Name
+        </th>
+        <td mat-cell *matCellDef="let contact">{{ contact.lastName }}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by email">
+          Email
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          <span class="text-muted">{{ contact.email || '-' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Phone Number Column -->
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by phone">
+          Phone
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          {{ contact.phoneNumber || '-' }}
+        </td>
+      </ng-container>
+
+      <!-- City Column -->
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by city">
+          City
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          {{ contact.city || '-' }}
+        </td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by state">
+          State
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          {{ contact.state || '-' }}
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let contact">
+          <div class="action-buttons">
+            <button
+              mat-icon-button
+              matTooltip="Edit contact"
+              (click)="openEditModal(contact)"
+              color="primary"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              matTooltip="Delete contact"
+              (click)="deleteContact(contact)"
+              color="warn"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Header and Body Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="contact-row"></tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      pageSize="10"
+    ></mat-paginator>
+  </div>
+</div>

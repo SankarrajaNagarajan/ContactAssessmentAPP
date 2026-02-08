@@ -1,0 +1,51 @@
+<div class="d-flex flex-column min-vh-100">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <div class="row w-100 align-items-center">
+        <!-- First Column: Contact Management -->
+        <div class="col-4 d-flex align-items-center">
+          <!-- <a class="navbar-brand mb-0" href="#"> -->
+            Contact Management
+            <!-- <i class="bi bi-contacts me-2"></i>Contact Management -->
+          <!-- </a> -->
+        </div>
+        
+        <!-- Second Column: Empty -->
+        <div class="col-4"></div>
+        
+        <!-- Third Column: User Icon -->
+        <div class="col-4 d-flex justify-content-end">
+          <div class="user-dropdown">
+            <button 
+              class="btn btn-link user-btn" 
+              (click)="toggleDropdown()"
+              type="button"
+            >
+              <i class="bi bi-person-circle user-icon"></i>
+            </button>
+            <div class="dropdown-menu-custom" [class.show]="showDropdown">
+              <button 
+                type="button" 
+                class="dropdown-item" 
+                (click)="logout()"
+              >
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 container-fluid py-4">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+   <footer class="bg-dark text-white text-center py-3 mt-5">
+    <p class="mb-0">&copy; 2026 Contact Management System. All rights reserved.</p>
+  </footer>
+</div>

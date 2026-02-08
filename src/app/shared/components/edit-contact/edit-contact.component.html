@@ -1,0 +1,179 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    <i class="bi bi-pencil-square me-2"></i>
+    Edit Contact
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="firstName" class="form-label">First Name *</label>
+        <input
+          type="text"
+          id="firstName"
+          class="form-control"
+          formControlName="firstName"
+          [class.is-invalid]="submitted && f['firstName'].errors"
+          placeholder="Enter first name"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['firstName'].errors">
+          <span *ngIf="f['firstName'].errors['required']">First name is required</span>
+          <span *ngIf="f['firstName'].errors['minlength']">First name must be at least 2 characters</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="lastName" class="form-label">Last Name *</label>
+        <input
+          type="text"
+          id="lastName"
+          class="form-control"
+          formControlName="lastName"
+          [class.is-invalid]="submitted && f['lastName'].errors"
+          placeholder="Enter last name"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['lastName'].errors">
+          <span *ngIf="f['lastName'].errors['required']">Last name is required</span>
+          <span *ngIf="f['lastName'].errors['minlength']">Last name must be at least 2 characters</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="email" class="form-label">Email *</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          formControlName="email"
+          [class.is-invalid]="submitted && f['email'].errors"
+          placeholder="Enter email"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['email'].errors">
+          <span *ngIf="f['email'].errors['required']">Email is required</span>
+          <span *ngIf="f['email'].errors['email']">Email must be valid</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number *</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          class="form-control"
+          formControlName="phoneNumber"
+          [class.is-invalid]="submitted && f['phoneNumber'].errors"
+          placeholder="e.g., +1 (123) 456-7890"
+          inputmode="numeric"
+          (keypress)="allowOnlyNumbers($event)"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['phoneNumber'].errors">
+          <span *ngIf="f['phoneNumber'].errors['required']">Phone number is required</span>
+          <span *ngIf="f['phoneNumber'].errors['invalidPhoneNumber']">Phone number must contain only numbers, dashes, plus, parentheses, or spaces</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="address" class="form-label">Address *</label>
+      <input
+        type="text"
+        id="address"
+        class="form-control"
+        formControlName="address"
+        [class.is-invalid]="submitted && f['address'].errors"
+        placeholder="Enter address"
+      />
+      <div class="invalid-feedback" *ngIf="submitted && f['address'].errors">
+        Address is required
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="city" class="form-label">City *</label>
+        <input
+          type="text"
+          id="city"
+          class="form-control"
+          formControlName="city"
+          [class.is-invalid]="submitted && f['city'].errors"
+          placeholder="Enter city"
+          (keypress)="allowOnlyLetters($event)"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['city'].errors">
+          <span *ngIf="f['city'].errors['required']">City is required</span>
+          <span *ngIf="f['city'].errors['lettersOnly']">City must contain only letters and spaces</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="state" class="form-label">State *</label>
+        <input
+          type="text"
+          id="state"
+          class="form-control"
+          formControlName="state"
+          [class.is-invalid]="submitted && f['state'].errors"
+          placeholder="Enter state"
+          (keypress)="allowOnlyLetters($event)"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['state'].errors">
+          <span *ngIf="f['state'].errors['required']">State is required</span>
+          <span *ngIf="f['state'].errors['lettersOnly']">State must contain only letters and spaces</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="country" class="form-label">Country *</label>
+        <input
+          type="text"
+          id="country"
+          class="form-control"
+          formControlName="country"
+          [class.is-invalid]="submitted && f['country'].errors"
+          placeholder="Enter country"
+          (keypress)="allowOnlyLetters($event)"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['country'].errors">
+          <span *ngIf="f['country'].errors['required']">Country is required</span>
+          <span *ngIf="f['country'].errors['lettersOnly']">Country must contain only letters and spaces</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="postalCode" class="form-label">Postal Code *</label>
+        <input
+          type="text"
+          id="postalCode"
+          class="form-control"
+          formControlName="postalCode"
+          [class.is-invalid]="submitted && f['postalCode'].errors"
+          placeholder="Enter postal code"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['postalCode'].errors">
+          Postal code is required
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="loading || form.invalid"
+  >
+    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+    {{ loading ? 'Updating...' : 'Update Contact' }}
+  </button>
+</div>

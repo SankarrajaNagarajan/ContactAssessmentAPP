@@ -1,0 +1,140 @@
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+
+  .nav-link {
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #ffc107 !important;
+    }
+  }
+}
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+
+  .user-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .user-icon {
+    font-size: 1.8rem;
+    color: #fff;
+    transition: color 0.3s ease;
+
+    .user-btn:hover & {
+      color: #ffc107;
+    }
+  }
+
+  .dropdown-menu-custom {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    margin-top: 5px;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: none;
+      text-align: left;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+        color: #007bff;
+      }
+
+      i {
+        color: currentColor;
+      }
+    }
+  }
+}
+
+main {
+  background-color: #f8f9fa;
+}
+
+footer {
+  border-top: 1px solid #dee2e6;
+  margin-top: auto;
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    .navbar-brand {
+      font-size: 1.1rem;
+    }
+  }
+
+  main {
+    padding: 1rem 0.5rem !important;
+  }
+
+  .user-dropdown {
+    .dropdown-menu-custom {
+      min-width: 150px;
+      right: -10px;
+    }
+
+    .user-icon {
+      font-size: 1.5rem;
+    }
+  }
+}
