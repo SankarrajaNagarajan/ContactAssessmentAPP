@@ -7,9 +7,9 @@ import { JwtUtilService } from './jwt-util.service';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = '/api/Auth';
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-  private currentUserSubject = new BehaviorSubject<any>(this.getClaims());
+  private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(
@@ -17,11 +17,11 @@ export class AuthService {
     private jwtUtil: JwtUtilService
   ) {
     this.validateTokenOnInit();
+    this.isAuthenticatedSubject.next(this.hasValidToken());
+    this.currentUserSubject.next(this.getClaims());
   }
 
-  /**
-   * Validate token on service initialization
-   */
+
   private validateTokenOnInit(): void {
     const token = this.getToken();
     if (token && !this.jwtUtil.isValidTokenStructure(token)) {
@@ -29,9 +29,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * Login with username and password
-   */
+
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
       tap(response => {
@@ -43,9 +41,7 @@ export class AuthService {
     );
   }
 
-  /**
-   * Logout and clear token
-   */
+  
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiry');
@@ -53,9 +49,7 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
-  /**
-   * Store token and update authentication state
-   */
+
   private storeToken(token: string): void {
     if (this.jwtUtil.isValidTokenStructure(token)) {
       localStorage.setItem('authToken', token);
@@ -70,13 +64,11 @@ export class AuthService {
     }
   }
 
-  /**
-   * Get stored JWT token
-   */
+
   getToken(): string | null {
     const token = localStorage.getItem('authToken');
     
-    // If token exists but is expired, remove it
+
     if (token && this.jwtUtil.isTokenExpired(token)) {
       this.logout();
       return null;
@@ -85,9 +77,6 @@ export class AuthService {
     return token;
   }
 
-  /**
-   * Refresh the JWT token (if the backend supports it)
-   */
   refreshToken(): Observable<any> {
     const currentToken = this.getToken();
     if (!currentToken) {
@@ -107,9 +96,7 @@ export class AuthService {
     );
   }
 
-  /**
-   * Check if user is authenticated and token is valid
-   */
+
   isAuthenticated(): boolean {
     const token = this.getToken();
     if (!token) {
@@ -119,35 +106,27 @@ export class AuthService {
     return !this.jwtUtil.isTokenExpired(token);
   }
 
-  /**
-   * Check if token is expired
-   */
+
   isTokenExpired(): boolean {
     const token = this.getToken();
     return !token || this.jwtUtil.isTokenExpired(token);
   }
 
-  /**
-   * Get token expiration time in milliseconds
-   */
+
   getTokenExpirationTime(): number {
     const token = this.getToken();
     if (!token) return -1;
     return this.jwtUtil.getTokenExpirationTime(token);
   }
 
-  /**
-   * Get current user claims from token
-   */
+ 
   getClaims(): any {
     const token = this.getToken();
     if (!token) return null;
     return this.jwtUtil.getTokenClaims(token);
   }
 
-  /**
-   * Check if user has valid token on initialization
-   */
+ 
   private hasValidToken(): boolean {
     const token = localStorage.getItem('authToken');
     if (!token) return false;
@@ -157,20 +136,17 @@ export class AuthService {
     return !this.jwtUtil.isTokenExpired(token);
   }
 
-  /**
-   * Handle HTTP errors
-   */
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An error occurred';
     
     if (error.error instanceof ErrorEvent) {
-      // Client-side error
+ 
       errorMessage = error.error.message;
     } else {
-      // Server-side error
+
       errorMessage = error.error?.message || error.statusText || 'Server error';
       
-      // If 401, clear token
+
       if (error.status === 401) {
         this.logout();
       }
