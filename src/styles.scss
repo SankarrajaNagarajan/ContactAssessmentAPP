@@ -1,9 +1,11 @@
-/* Ensure body allows modal to be visible */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+
 body {
   overflow: visible !important;
 }
 
-/* Prevent any parent container from hiding modal */
+
 .gmail-contact-wrapper,
 .table-container {
   position: relative;
@@ -11,7 +13,7 @@ body {
   overflow: visible !important;
 }
 
-/* Dropdown menu styling */
+
 .dropdown-menu {
   z-index: 10000 !important;
   position: absolute !important;
@@ -22,7 +24,7 @@ body {
   z-index: 10000 !important;
 }
 
-/* Ensure navbar is above content */
+
 nav,
 .navbar {
   z-index: 100 !important;
@@ -30,7 +32,7 @@ nav,
 }
 
 .modal-custom-size {
-  /* Fixed 500px desktop dialog */
+
   .modal-dialog {
     max-width: 500px !important;
     width: 500px !important;
@@ -43,7 +45,7 @@ nav,
     z-index: 99999 !important;
   }
 
-  /* SOLID WHITE BACKGROUND */
+
   .modal-content {
     height: 100% !important;
     border-radius: 16px !important;
@@ -61,7 +63,7 @@ nav,
   }
 }
 
-/* Global Modal Backdrop - MUST be highest priority */
+
 :global(.modal-backdrop) {
   z-index: 99998 !important;
   background-color: rgba(0, 0, 0, 0.5) !important;
@@ -86,7 +88,7 @@ nav,
   z-index: 99999 !important;
 }
 
-/* MOBILE RESPONSIVE */
+
 @media (max-width: 768px) {
   .modal-custom-size .modal-dialog {
     width: 95vw !important;

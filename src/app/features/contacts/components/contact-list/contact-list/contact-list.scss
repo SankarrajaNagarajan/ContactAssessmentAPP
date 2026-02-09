@@ -1,4 +1,4 @@
-// Gmail-style Contacts UI with Material Design
+
 .gmail-contact-wrapper {
   background: #fff;
   border-radius: 8px;
@@ -8,7 +8,7 @@
   z-index: 1;
 }
 
-// Custom Modal Size - Responsive
+
 :host ::ng-deep {
   .modal-custom-size {
     position: fixed !important;
@@ -91,7 +91,7 @@
     }
   }
 
-  // Tablet responsiveness
+
   @media (max-width: 768px) {
     .modal-custom-size {
       .modal-dialog {
@@ -106,7 +106,7 @@
     }
   }
 
-  // Mobile responsiveness
+
   @media (max-width: 480px) {
     .modal-custom-size {
       .modal-dialog {
@@ -126,7 +126,7 @@
   }
 }
 
-// Search and Action Bar
+
 .search-action-bar {
   display: flex;
   gap: 1rem;
@@ -170,7 +170,7 @@
   }
 }
 
-// Loading State
+
 .loading-state {
   display: flex;
   flex-direction: column;
@@ -189,7 +189,7 @@
   }
 }
 
-// Empty State
+
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -218,7 +218,7 @@
   }
 }
 
-// Material Table Wrapper
+
 .table-container {
   padding: 1.5rem 2rem;
   overflow-x: auto;
@@ -231,7 +231,7 @@
     background: white;
     border-collapse: collapse;
 
-    // Table Header
+
     .mat-header-cell {
       padding: 1rem;
       font-weight: 600;
@@ -270,7 +270,7 @@
       }
     }
 
-    // Table Cells
+
     .mat-cell {
       padding: 1rem;
       font-size: 0.9rem;
@@ -279,7 +279,7 @@
       border-bottom: 1px solid #e8eaed;
     }
 
-    // Contact Name with Avatar
+
     .contact-name {
       display: flex;
       align-items: center;
@@ -310,7 +310,7 @@
       }
     }
 
-    // Action Buttons
+
     .action-buttons {
       display: flex;
       gap: 0.5rem;
@@ -329,7 +329,7 @@
       }
     }
 
-    // Row Styling
+
     .mat-row {
       transition: background-color 0.15s ease;
 
@@ -343,7 +343,6 @@
     }
   }
 
-  // Paginator Styling
   ::ng-deep .mat-mdc-paginator {
     background-color: #f8f9fa;
     border-top: 1px solid #e8eaed;
@@ -372,13 +371,12 @@
     }
   }
 
-  // Text Styling
+
   .text-muted {
     color: #5f6368 !important;
   }
 }
 
-// Checkbox Styling
 ::ng-deep .mat-mdc-checkbox {
   .mdc-checkbox {
     height: 20px;
@@ -386,7 +384,7 @@
   }
 }
 
-// Button Styling
+
 ::ng-deep {
   .mat-mdc-raised-button[color="primary"] {
     background-color: #667eea;
@@ -426,7 +424,7 @@
   }
 }
 
-// Responsive Design
+
 @media (max-width: 1024px) {
   .search-action-bar {
     padding: 1.5rem;

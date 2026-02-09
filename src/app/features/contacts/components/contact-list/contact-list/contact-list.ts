@@ -61,104 +61,38 @@ export class ContactList implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadContacts();
+    
   }
 
   ngAfterViewInit(): void {
-    // Provide a robust accessor:
-    // - sort "Name" by combined first+last
-    // - handle null/undefined
-    // - case-insensitive for strings
-    // - numeric sorting for numeric-like values
-    this.dataSource.sortingDataAccessor = (item: any, property: string) => {
-      if (!item) return '';
-
-      // Sort "Name" column (firstName header) by full name (first + last)
-      if (property === 'firstName') {
-        const first = item.firstName || '';
-        const last = item.lastName || '';
-        return (first + ' ' + last).toString().toLowerCase();
-      }
-
-      const value = item[property];
-
-      if (value == null) return '';
-
-      // If value looks numeric, return number for numeric sort
-      const num = Number(value);
-      if (!isNaN(num) && value !== '' && typeof value !== 'object') {
-        return num;
-      }
-
-      // Default: string lower-cased
-      return typeof value === 'string' ? value.toLowerCase() : value;
-    };
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  loadContacts(): void {
-    this.loading = true;
-    this.contactService.getContacts().subscribe({
-      next: (response: any) => {
-        this.contacts = response.items || [];
-        this.dataSource.data = this.contacts;
-
-        // Re-assign sort after async data load to ensure sorting hooks are active
-        if (this.sort) {
-          this.dataSource.sort = this.sort;
-        }
-
-        // Force datasource to refresh internal subscriptions so sorting/pagination update
-        // Note: _updateChangeSubscription is commonly used to refresh the table after programmatic changes
-        (this.dataSource as any)._updateChangeSubscription?.();
-
-        if (this.paginator) {
-          this.paginator.firstPage();
-        }
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error loading contacts', err);
-        this.loading = false;
+loadContacts(): void {
+  this.loading = true;
+  this.contactService.getContacts().subscribe({
+    next: (response: any) => {
+      this.contacts = response.items || [];
+      this.dataSource.data = this.contacts;
+      this.loading = false;
+      setTimeout(() => {
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      });
+      if (this.paginator) {
+        this.paginator.firstPage();
       }
-    });
-  }
-
-  applyFilters(): void {
-    const filtered = this.contacts.filter(contact => {
-      const firstName = (contact.firstName || '').toLowerCase();
-      const lastName = (contact.lastName || '').toLowerCase();
-      const email = (contact.email || '').toLowerCase();
-      const phone = (contact.phoneNumber || '').toLowerCase();
-      const searchTerm = this.searchFilters.name.toLowerCase();
-
-      return (
-        firstName.includes(searchTerm) ||
-        lastName.includes(searchTerm) ||
-        email.includes(searchTerm) ||
-        phone.includes(searchTerm)
-      );
-    });
-
-    this.dataSource.data = filtered;
-    if (this.paginator) {
-      this.paginator.firstPage();
+    },
+    error: (err) => {
+      console.error('Error loading contacts', err);
+      this.loading = false;
     }
-  }
+  });
+}
 
-  clearFilters(): void {
-    this.searchFilters = {
-      name: '',
-      phone: '',
-      email: ''
-    };
-    this.applyFilters();
-  }
+  
 
-  onSearchInput(): void {
-    this.applyFilters();
-  }
 
   // Helper Methods
   getInitials(firstName: string | undefined, lastName: string | undefined): string {
@@ -167,25 +101,7 @@ export class ContactList implements OnInit, AfterViewInit {
     return (first + last).substring(0, 2) || 'U';
   }
 
-  getCompanyName(contact: Contact): string {
-    // This can be extended to use a company field if added to the model
-    // For now, returning empty string
-    return '';
-  }
-
-  // getCompanyClass(contact: Contact): string {
-  //   const companies: { [key: string]: string } = {
-  //     'microsoft': 'company-microsoft',
-  //     'google': 'company-google',
-  //     'apple': 'company-apple',
-  //     'amazon': 'company-amazon'
-  //   };
-    
-  //   const company = this.getCompanyName(contact).toLowerCase();
-  //   return companies[company] || 'company-default';
-  // }
-
-  // Selection Methods
+ 
   toggleSelectAll(event: any): void {
     if (event.checked) {
       this.dataSource.data.forEach(contact => {

@@ -34,7 +34,7 @@ export class ContactModalComponent implements OnInit {
     }
   }
 
-  // Custom validator for phone number (numbers, dashes, plus, parentheses, spaces only)
+
   private phoneNumberValidator = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {
       return null;
@@ -43,7 +43,7 @@ export class ContactModalComponent implements OnInit {
     return phoneRegex.test(control.value) ? null : { invalidPhoneNumber: true };
   };
 
-  // Custom validator for letters only (a-z, A-Z, and spaces)
+
   private lettersOnlyValidator = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {
       return null;
@@ -66,7 +66,7 @@ export class ContactModalComponent implements OnInit {
     });
   }
 
-  // Allow only numbers, dashes, plus, parentheses, and spaces in phone number
+
   allowOnlyNumbers(event: KeyboardEvent): void {
     const char = event.key;
     const allowedChars = /[0-9\-\+\(\)\s]/;
@@ -76,7 +76,7 @@ export class ContactModalComponent implements OnInit {
     }
   }
 
-  // Allow only letters and spaces in city, state, country
+
   allowOnlyLetters(event: KeyboardEvent): void {
     const char = event.key;
     const allowedChars = /[a-zA-Z\s]/;
