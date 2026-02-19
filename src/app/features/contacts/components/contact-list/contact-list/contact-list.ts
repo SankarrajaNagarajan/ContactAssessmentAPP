@@ -38,6 +38,7 @@ export class ContactList implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+
   dataSource = new MatTableDataSource<Contact>();
   displayedColumns: string[] = ['select', 'firstName', 'lastName', 'email', 'phoneNumber', 'city', 'state', 'actions'];
 
@@ -45,7 +46,9 @@ export class ContactList implements OnInit, AfterViewInit {
   loading = false;
   selectedContacts = new Set<number | string>();
 
-  // Pagination
+  lastAddedContactId: string | number | null = null;
+
+ 
   pageSize = 10;
 
   searchFilters = {
@@ -53,6 +56,7 @@ export class ContactList implements OnInit, AfterViewInit {
     phone: '',
     email: ''
   };
+    modalRef: any;
 
   constructor(
     private contactService: ContactService,
@@ -69,32 +73,41 @@ export class ContactList implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-loadContacts(): void {
-  this.loading = true;
-  this.contactService.getContacts().subscribe({
-    next: (response: any) => {
-      this.contacts = response.items || [];
-      this.dataSource.data = this.contacts;
-      this.loading = false;
-      setTimeout(() => {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      });
-      if (this.paginator) {
-        this.paginator.firstPage();
+  loadContacts(): void {
+    this.loading = true;
+    this.contactService.getContacts().subscribe({
+      next: (response: any) => {
+        let contacts = response.items || [];
+        // If lastAddedContactId is set, move that contact to the top
+        if (this.lastAddedContactId) {
+          const idx = contacts.findIndex((c: any) => c.id === this.lastAddedContactId);
+          if (idx > -1) {
+            const [newContact] = contacts.splice(idx, 1);
+            contacts = [newContact, ...contacts];
+          }
+        }
+        this.contacts = contacts;
+        this.dataSource.data = this.contacts;
+        this.loading = false;
+        setTimeout(() => {
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        });
+        if (this.paginator) {
+          this.paginator.firstPage();
+        }
+      },
+      error: (err) => {
+        console.error('Error loading contacts', err);
+        this.loading = false;
       }
-    },
-    error: (err) => {
-      console.error('Error loading contacts', err);
-      this.loading = false;
-    }
-  });
-}
+    });
+  }
 
   
 
 
-  // Helper Methods
+ 
   getInitials(firstName: string | undefined, lastName: string | undefined): string {
     const first = firstName?.charAt(0).toUpperCase() || '';
     const last = lastName?.charAt(0).toUpperCase() || '';
@@ -133,7 +146,7 @@ loadContacts(): void {
     );
   }
 
-  // Open Add Contact Modal
+
   openAddModal(): void {
     const modalRef = this.modalService.open(AddContactComponent, {
       size: 'lg',
@@ -144,15 +157,23 @@ loadContacts(): void {
     });
 
     modalRef.result
-      .then(result => {
-        if (result) {
-          this.loadContacts();
+      .then((result: any) => {
+        if (result && result.id) {
+          this.lastAddedContactId = result.id;
+        } else {
+          this.lastAddedContactId = null;
         }
+        this.loadContacts();
       })
-      .catch(() => {});
+      .catch(() => {
+        this.lastAddedContactId = null;
+      });
+  }
+  isNewlyAdded(contact: Contact): boolean {
+    return contact.id === this.lastAddedContactId;
   }
 
-  // Open Edit Contact Modal
+ 
   openEditModal(contact: Contact): void {
     const modalRef = this.modalService.open(EditContactComponent, {
       size: 'lg',
@@ -173,14 +194,14 @@ loadContacts(): void {
       .catch(() => {});
   }
 
-  // Open Delete Contact Modal
+
   deleteContact(contact: Contact): void {
     const modalRef = this.modalService.open(DeleteContactComponent, {
-      size: 'md',
+      size: 'lg',
       backdrop: 'static',
       centered: true,
       keyboard: false,
-      windowClass: 'modal-custom-size'
+      windowClass: 'modal-custom-size-delete'
     });
 
     modalRef.componentInstance.contact = contact;

@@ -137,7 +137,7 @@
 
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="contact-row"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="contact-row" [ngClass]="{'highlight-new': isNewlyAdded(row)}"></tr>
     </table>
 
 

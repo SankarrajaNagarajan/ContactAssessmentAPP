@@ -87,9 +87,9 @@ export class AddContactComponent implements OnInit {
     const contactData: Contact = this.form.value;
 
     this.contactService.createContact(contactData).subscribe({
-      next: () => {
+      next: (createdContact) => {
         this.loading = false;
-        this.activeModal.close(true);
+        this.activeModal.close(createdContact);
       },
       error: (err) => {
         console.error('Error creating contact', err);

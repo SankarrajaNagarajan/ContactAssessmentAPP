@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
-
 @Injectable({ providedIn: 'root' })
 export class JwtUtilService {
-  
-  /**
-   * Decode a JWT token and extract the payload
-   * @param token JWT token
-   * @returns Decoded token payload or null if invalid
-   */
   decodeToken(token: string): any {
     try {
       const base64Url = token.split('.')[1];
@@ -27,34 +20,24 @@ export class JwtUtilService {
       return null;
     }
   }
-
-  /**
-   * Check if a JWT token is expired
-   * @param token JWT token
-   * @returns true if token is expired, false otherwise
-   */
+  
   isTokenExpired(token: string): boolean {
     try {
       const payload = this.decodeToken(token);
       if (!payload || !payload.exp) return true;
       
-      // exp is in seconds, convert to milliseconds
+     
       const expirationTime = payload.exp * 1000;
       const currentTime = new Date().getTime();
       
-      // Consider token expired if less than 1 minute remaining
+     
       return currentTime >= expirationTime - 60000;
     } catch (error) {
       console.error('Error checking token expiration:', error);
       return true;
     }
   }
-
-  /**
-   * Get the remaining time until token expiration
-   * @param token JWT token
-   * @returns Remaining time in milliseconds, or -1 if expired
-   */
+  
   getTokenExpirationTime(token: string): number {
     try {
       const payload = this.decodeToken(token);
@@ -70,21 +53,11 @@ export class JwtUtilService {
       return -1;
     }
   }
-
-  /**
-   * Extract claims from a JWT token
-   * @param token JWT token
-   * @returns Token claims or null if invalid
-   */
+  
   getTokenClaims(token: string): any {
     return this.decodeToken(token);
   }
-
-  /**
-   * Validate JWT token structure
-   * @param token JWT token
-   * @returns true if token has valid structure, false otherwise
-   */
+  
   isValidTokenStructure(token: string): boolean {
     if (!token || typeof token !== 'string') return false;
     

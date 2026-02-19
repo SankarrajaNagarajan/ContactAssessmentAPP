@@ -29,6 +29,28 @@ export class AuthService {
     }
   }
 
+//   login(username: string, password: string) {
+  
+//   this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password })
+//     .subscribe({
+//       next: (response) => {
+//         if (response.token) {
+
+//           localStorage.setItem('authToken', response.token);
+//           this.isAuthenticatedSubject.next(true);
+//         }
+//       },
+//       error: (error) => {
+
+//         console.error('Login failed:', error);
+//         if (error.status === 401) {
+//           this.logout();
+//         }
+//       }
+//     });
+// }
+
+
 
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(

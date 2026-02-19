@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // Add JWT token to request headers if available
+    
     const token = this.authService.getToken();
     if (token) {
       request = this.addToken(request, token);
@@ -33,9 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  /**
-   * Add JWT token to request headers
-   */
+  
   private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
     return request.clone({
       setHeaders: {
@@ -44,38 +42,34 @@ export class AuthInterceptor implements HttpInterceptor {
     });
   }
 
-  /**
-   * Handle HTTP errors
-   */
+ 
   private handleError(
     error: HttpErrorResponse,
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // Handle 401 Unauthorized
+
     if (error.status === 401) {
       return this.handle401Error(request, next);
     }
 
-    // Handle 403 Forbidden
+
     if (error.status === 403) {
       this.authService.logout();
       this.router.navigate(['/auth']);
       return throwError(() => new Error('Access denied. Please login again.'));
     }
 
-    // Handle other errors
+
     return throwError(() => error);
   }
 
-  /**
-   * Handle 401 Unauthorized - attempt token refresh
-   */
+
   private handle401Error(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // If already refreshing, wait for refresh to complete
+ 
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
@@ -95,7 +89,7 @@ export class AuthInterceptor implements HttpInterceptor {
         })
       );
     } else {
-      // Wait for token refresh to complete then retry request
+
       return this.refreshTokenSubject.pipe(
         filter(token => token != null),
         take(1),
